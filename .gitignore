@@ -1,0 +1,32 @@
+# IDE
+/.idea
+/htmlcov
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+.tox/
+
+# virtual environments
+env
+.venv
+
+# environment variables file
+.env
+
+# git rejected hunks from merge
+.rej
+
+*.egg-info
