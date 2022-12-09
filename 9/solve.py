@@ -11,8 +11,7 @@ directions = {
 def move_tail(current_head, current_tail):
     x, y = current_head[0] - current_tail[0], current_head[1] - current_tail[1]
     if abs(x) > 1 or abs(y) > 1:
-        head_direction = [int(x/2 + math.copysign(.5, x/2)), int(y/2 + math.copysign(.5, y/2))]
-        current_tail = (current_tail[0] + head_direction[0], current_tail[1] + head_direction[1])
+        current_tail = (current_tail[0] + int(x/2 + math.copysign(.5, x)), current_tail[1] + int(y/2 + math.copysign(.5, y)))
     return current_tail
 
 
