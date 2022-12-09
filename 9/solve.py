@@ -9,12 +9,9 @@ directions = {
 
 
 def move_tail(current_head, current_tail):
-    if abs(current_head[0] - current_tail[0]) > 1 or abs(current_head[1] - current_tail[1]) > 1:
-        head_direction = [0, 0]
-        if current_tail[0] != current_head[0]:
-            head_direction[0] = int(math.copysign(1, current_head[0] - current_tail[0]))
-        if current_tail[1] != current_head[1]:
-            head_direction[1] = int(math.copysign(1, current_head[1] - current_tail[1]))
+    x, y = current_head[0] - current_tail[0], current_head[1] - current_tail[1]
+    if abs(x) > 1 or abs(y) > 1:
+        head_direction = [int(x/2 + math.copysign(.5, x/2)), int(y/2 + math.copysign(.5, y/2))]
         current_tail = (current_tail[0] + head_direction[0], current_tail[1] + head_direction[1])
     return current_tail
 
@@ -52,4 +49,4 @@ def part2():
     print(len(visited))
 
 if __name__ == '__main__':
-    part2()
+    part1()
