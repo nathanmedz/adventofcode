@@ -1,4 +1,4 @@
-
+import functools
 import json
 
 
@@ -8,17 +8,21 @@ def compare(left, right):
             return None
         return left < right
     elif isinstance(left, int) and not isinstance(right, int):
-        return compare([left], right)
+        res = compare([left], right)
+        if res in [True, False]:
+            return res
     elif isinstance(right, int) and not isinstance(left, int):
-        return compare(left, [right])
+        res = compare(left, [right])
+        if res in [True, False]:
+            return res
     else:
         for i in range(min([len(left), len(right)])):
             res = compare(left[i], right[i])
             if res in [True, False]:
                 return res
-        if len(left) > len(right):
-            return False
-    return True
+        if len(left) == len(right):
+            return None
+        return len(left) < len(right)
 
 
 def part1():
@@ -41,16 +45,6 @@ def part1():
     print(sum(correct_pairs))
 
 
-def bubbleSort(arr):
-    l = len(arr)
-    for i in range(l - 1):
-        for j in range(l - i - 1):
-            res = compare(arr[j], arr[j+1])
-            # print(res, arr[j], arr[j+1])
-            if not res:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-
-
 def part2():
     pairs = [[[2]], [[6]]]
     with open('input.txt') as f:
@@ -64,9 +58,9 @@ def part2():
             pairs.append(json.loads(line_2.strip()))
             f.readline()
 
-    bubbleSort(pairs)
+    pairs.sort(key=functools.cmp_to_key(lambda x, y: -1 if compare(x, y) else 1))
     first = pairs.index([[2]]) + 1
-    second = pairs.index([[6]]) +1
+    second = pairs.index([[6]]) + 1
     print(first * second)
 
 
