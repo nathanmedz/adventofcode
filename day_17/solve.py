@@ -4,7 +4,7 @@ def do_moves(n, directions, print_steps=False):
     top_stack = 0
     for piece_idx in range(n):
         piece = get_coords(piece_idx % 5, (3, top_stack + 4))
-        stack, top_stack, direction_idx = drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps)
+        top_stack, direction_idx = drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps)
     return top_stack
 
 def drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps=False):
@@ -21,11 +21,12 @@ def drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps=F
             show_stack(stack, moved_piece)
         piece = move_piece(moved_piece, 'down')
         if check_collision(piece, stack):
-            stack = stack.union(moved_piece)
+            stack.update(moved_piece)
             top_stack = max(top_stack, get_height(moved_piece))
             if print_steps:
                 show_stack(stack, set())
-            return stack, top_stack, direction_idx
+            return top_stack, direction_idx
+
 
 def find_repeat(directions):
     piece_idx = 0
@@ -43,9 +44,11 @@ def find_repeat(directions):
                 progression[prog_coord] = piece_idx, direction_idx, True
         else:
             progression[prog_coord] = piece_idx, direction_idx, False
-        stack, top_stack, direction_idx = drop_piece(stack, piece, top_stack, direction_idx, directions)
+        top_stack, direction_idx = drop_piece(stack, piece, top_stack, direction_idx, directions)
 
         piece_idx += 1
+
+
 def part1():
     with open('input.txt') as f:
         directions = [i for i in f.readline().strip()]
