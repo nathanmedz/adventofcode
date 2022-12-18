@@ -7,6 +7,7 @@ def do_moves(n, directions, print_steps=False):
         top_stack, direction_idx = drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps)
     return top_stack
 
+
 def drop_piece(stack, piece, top_stack, direction_idx, directions, print_steps=False):
     while True:
         if print_steps:
@@ -36,7 +37,7 @@ def find_repeat(directions):
     progression = {}
     while True:
         piece = get_coords(piece_idx % 5, (3, top_stack + 4))
-        prog_coord = (piece_idx %5, direction_idx)
+        prog_coord = (piece_idx % 5, direction_idx)
         if progression.get(prog_coord):
             if progression.get(prog_coord)[2]:
                 return progression.get(prog_coord)[0], piece_idx
@@ -54,6 +55,7 @@ def part1():
         directions = [i for i in f.readline().strip()]
     print(do_moves(2022, directions))
 
+
 def part2():
     with open('input.txt') as f:
         directions = [i for i in f.readline().strip()]
@@ -64,12 +66,10 @@ def part2():
     initial_total = do_moves(repeat_start, directions)
     repeat_value = do_moves(repeat_start + repeat_interval, directions) - initial_total
     num_repeats = (total_iters - repeat_start) // repeat_interval
-    num_remaining = (total_iters - repeat_start ) % repeat_interval
+    num_remaining = (total_iters - repeat_start) % repeat_interval
     repeat_total = num_repeats * repeat_value
     remaining_total = do_moves(repeat_start + num_remaining, directions) - initial_total
     print(repeat_total + initial_total + remaining_total)
-
-
 
 
 def show_stack(stack, piece):
@@ -91,7 +91,6 @@ def show_stack(stack, piece):
     print('+-------+\n')
 
 
-
 def check_collision(piece, stack):
     for coord in piece:
         if coord[0] == 0 or coord[0] == 8:
@@ -99,6 +98,7 @@ def check_collision(piece, stack):
         if coord[1] == 0 or coord in stack:
             return True
     return False
+
 
 def move_piece(piece, direction):
     directions = {
@@ -112,20 +112,21 @@ def move_piece(piece, direction):
 def get_height(stack):
     if not stack:
         return 0
-    return max(y for (x,y) in stack)
+    return max(y for (x, y) in stack)
+
 
 def get_coords(idx, bottom_left):
-    x , y = bottom_left
+    x, y = bottom_left
     if idx == 0:
-        return {(x, y), (x+1, y), (x+2, y), (x+3, y)}
+        return {(x, y), (x + 1, y), (x + 2, y), (x + 3, y)}
     elif idx == 1:
-        return {(x, y+1), (x+1, y+1), (x+2, y+1), (x+1, y), (x+1, y+2)}
+        return {(x, y + 1), (x + 1, y + 1), (x + 2, y + 1), (x + 1, y), (x + 1, y + 2)}
     elif idx == 2:
-        return {(x, y), (x+1, y), (x+2, y), (x+2, y+1), (x+2, y+2)}
+        return {(x, y), (x + 1, y), (x + 2, y), (x + 2, y + 1), (x + 2, y + 2)}
     elif idx == 3:
-        return {(x, y), (x, y+1), (x, y+2), (x, y+3)}
+        return {(x, y), (x, y + 1), (x, y + 2), (x, y + 3)}
     elif idx == 4:
-        return {(x, y), (x, y+1), (x + 1, y+1), (x+1, y)}
+        return {(x, y), (x, y + 1), (x + 1, y + 1), (x + 1, y)}
 
 
 if __name__ == '__main__':
