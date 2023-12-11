@@ -34,22 +34,12 @@ class Solver:
         return galaxies
 
     def part1(self):
-        total = 0
         galaxies = self.expand_galaxies(1)
-        for a in galaxies:
-            for b in galaxies:
-                if a != b:
-                    total += Solver.distance_between(a, b)
-        return total // 2
+        return sum(Solver.distance_between(a, b) for a in galaxies for b in galaxies if a != b) // 2
 
     def part2(self):
-        total = 0
         galaxies = self.expand_galaxies(999999)
-        for a in galaxies:
-            for b in galaxies:
-                if a != b:
-                    total += Solver.distance_between(a, b)
-        return total // 2
+        return sum(Solver.distance_between(a, b) for a in galaxies for b in galaxies if a != b) // 2
 
 
 if __name__ == '__main__':
