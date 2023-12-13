@@ -18,33 +18,26 @@ class Solver:
         return data
 
     @staticmethod
-    def get_column_value(puzzle, bit_count=0):
+    def get_score(puzzle, bit_count=0):
         rows = [row.replace('.', '0',).replace('#', '1') for row in puzzle]
-        columns = [''] * len(rows[0])
-        for row in rows:
-            for idx, char in enumerate(row):
-                columns[idx] += char
-
         reversed_rows = rows[::-1]
 
         for idx in range(len(rows)//2):
             if (int(''.join(rows[:idx+1]), 2) ^ int(''.join(rows[idx+1:(idx*2) + 2][::-1]), 2)).bit_count() == bit_count:
-                return 100*(idx + 1)
-            if (int(''.join(reversed_rows[:idx+1]), 2) ^ int(''.join(reversed_rows[idx+1:(idx*2) + 2][::-1]), 2)).bit_count() == bit_count:
-                return 100*(len(rows) - idx - 1)
-
-        reversed_columns = columns[::-1]
-        for idx in range(len(columns)//2):
-            if (int(''.join(columns[:idx+1]), 2) ^ int(''.join(columns[idx+1:(idx*2) + 2][::-1]), 2)).bit_count() == bit_count:
                 return idx + 1
-            if (int(''.join(reversed_columns[:idx+1]), 2) ^ int(''.join(reversed_columns[idx+1:(idx*2) + 2][::-1]), 2)).bit_count() == bit_count:
-                return len(columns) - idx - 1
+            if (int(''.join(reversed_rows[:idx+1]), 2) ^ int(''.join(reversed_rows[idx+1:(idx*2) + 2][::-1]), 2)).bit_count() == bit_count:
+                return len(rows) - idx - 1
+        return 0
+
+    @staticmethod
+    def transpose(rows):
+        return [''.join(i) for i in zip(*rows)]
 
     def part1(self):
-        return sum([Solver.get_column_value(i, 0) for i in self.data])
+        return sum(100*Solver.get_score(i, 0) + solver.get_score(Solver.transpose(i), 0) for i in self.data)
 
     def part2(self):
-        return sum([Solver.get_column_value(i, 1) for i in self.data])
+        return sum(100*Solver.get_score(i, 1) + solver.get_score(Solver.transpose(i), 1) for i in self.data)
 
 
 if __name__ == '__main__':
