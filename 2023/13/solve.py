@@ -30,7 +30,6 @@ class Solver:
                 data.append([line for line in lines.split('\n')])
         return data
 
-
     def part1(self):
         return sum(100*get_score(i, 0) + get_score(transpose(i), 0) for i in self.data)
 
