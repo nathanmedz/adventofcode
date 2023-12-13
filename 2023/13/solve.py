@@ -11,10 +11,7 @@ class Solver:
         data = []
         with open(file, 'r') as f:
             for lines in f.read().split('\n\n'):
-                puzzle_lines = []
-                for line in lines.split('\n'):
-                    puzzle_lines.append(line)
-                data.append(puzzle_lines)
+                data.append([line for line in lines.split('\n')])
         return data
 
     @staticmethod
