@@ -39,15 +39,19 @@ class Solver:
         return total
 
     def part2(self):
-        res_map = defaultdict(list)
+        res_map = {}
         data = self.data
-        for i in range(1000):
+        cycle_idx = 0
+        while True:
             data = spin(data)
-            res_map[tuple(data)].append(i)
+            if tuple(data) in res_map:
+                cycle_length = cycle_idx - res_map[tuple(data)]
+                break
+            else:
+                res_map[tuple(data)] = cycle_idx
+            cycle_idx += 1
 
-        index_vals = sorted([i for i in res_map.values()], key=lambda x: max(x))[-1]
-        stable_diff = index_vals[-1] - index_vals[-2]
-        needed_rotations = ((1000000000 - index_vals[-1]) % stable_diff) - 1
+        needed_rotations = ((1000000000 - cycle_idx) % cycle_length) - 1
         for i in range(needed_rotations):
             data = spin(data)
 
