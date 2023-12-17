@@ -1,5 +1,6 @@
 import argparse
 import sys
+import heapq
 
 
 class Solver:
@@ -17,10 +18,10 @@ class Solver:
         end = (len(nodes[-1]) -1, len(nodes) -1)
         visited = {}
 
-        nodes_to_visit = [((1, 0), (1, 0), 0, 0), ((0,1), (0, 1), 0, 0)]
+        nodes_to_visit = [(0, (1, 0), (1, 0), 0), (0, (0,1), (0, 1), 0)]
         end_cost = sys.maxsize
         while nodes_to_visit:
-            curr_node, curr_direction, path_cost, num_straight = nodes_to_visit.pop(0)
+            path_cost, curr_node, curr_direction,  num_straight = heapq.heappop(nodes_to_visit)
             curr_x, curr_y = curr_node
             if curr_x < 0 or curr_y < 0:
                 continue
@@ -45,11 +46,10 @@ class Solver:
             for direction in next_directions:
                 next_x, next_y = direction
                 next_node = (curr_x + next_x, curr_y + next_y)
-                nodes_to_visit.append((next_node, direction, path_cost, 0))
+                heapq.heappush(nodes_to_visit, (path_cost, next_node, direction, 0))
             if num_straight < 2:
                 next_node = (curr_x + curr_direction[0], curr_y + curr_direction[1])
-                nodes_to_visit.append((next_node, curr_direction, path_cost, num_straight + 1))
-            nodes_to_visit.sort(key=lambda x: x[2])
+                heapq.heappush(nodes_to_visit, (path_cost, next_node, curr_direction, num_straight + 1))
         return end_cost
 
     def part2(self):
@@ -57,10 +57,10 @@ class Solver:
         end = (len(nodes[-1]) -1, len(nodes) -1)
         visited = {}
         start_cost = - 1 * int(nodes[0][0])
-        nodes_to_visit = [((0, 0), (1, 0), start_cost), ((0, 0), (0, 1), start_cost)]
+        nodes_to_visit = [(start_cost, (0, 0), (1, 0)), (start_cost, (0, 0), (0, 1))]
         end_cost = sys.maxsize
         while nodes_to_visit:
-            curr_node, curr_direction, path_cost = nodes_to_visit.pop(0)
+            path_cost, curr_node, curr_direction = heapq.heappop(nodes_to_visit)
             curr_x, curr_y = curr_node
             if curr_x < 0 or curr_y < 0:
                 continue
@@ -94,9 +94,8 @@ class Solver:
                     except IndexError:
                         break
                     if i >= 4:
-                        nodes_to_visit.append((next_node, direction, direction_cost))
+                        heapq.heappush(nodes_to_visit, (direction_cost, next_node, direction))
                     direction_cost += next_cost
-            nodes_to_visit.sort(key=lambda x: x[2])
 
         return end_cost
 
