@@ -1,5 +1,3 @@
-import Data.List (sort, splitAt)
-
 readInt :: String -> Int
 readInt = read
 
