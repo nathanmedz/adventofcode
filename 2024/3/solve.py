@@ -24,13 +24,9 @@ class Solver:
     def part2(self):
         total = 0
         for line in self.parse():
-            line = "".join(
-                [
-                    segment[segment.find("do()") :]
-                    for segment in ("do()" + line).split("don't()")
-                ]
-            )
-            for match in re.finditer(r"mul\((\d{1,3})\,(\d{1,3})\)", line):
+            re_line = re.sub(r"don't\(\).*?do\(\)", "", "do()" + line)
+            re_line = re_line.split("don't()")[0]
+            for match in re.finditer(r"mul\((\d{1,3})\,(\d{1,3})\)", re_line):
                 groups = [int(i) for i in match.groups()]
                 total += reduce(mul, groups)
         return total
