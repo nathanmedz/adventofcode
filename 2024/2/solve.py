@@ -12,12 +12,33 @@ class Solver:
                 yield line
 
     def part1(self):
+        safe_levels = 0
         for line in self.parse():
-            pass
+            levels = [int(i) for i in line.split()]
+            level_pairs = [(x, y) for x, y in zip(levels, levels[1:])]
+            safe_levels += solver.is_safe(level_pairs)
+
+        return safe_levels
+
+    @staticmethod
+    def is_safe(level_pairs):
+        if level_pairs[0][0] > level_pairs[0][1]:
+            return all(0 < p[0] - p[1] <= 3 for p in level_pairs)
+        else:
+            return all(0 < p[1] - p[0] <= 3 for p in level_pairs)
 
     def part2(self):
+        safe_levels = 0
         for line in self.parse():
-            pass
+            levels = [int(i) for i in line.split()]
+            all_levels = [levels[:i] + levels[i + 1 :] for i in range(len(levels))]
+            for level in all_levels:
+                level_pairs = [(x, y) for x, y in zip(level, level[1:])]
+                if solver.is_safe(level_pairs):
+                    safe_levels += 1
+                    break
+
+        return safe_levels
 
 
 if __name__ == "__main__":
