@@ -12,12 +12,17 @@ class Solver:
                 yield line
 
     def part1(self):
-        for line in self.parse():
-            pass
+        left, right = zip(
+            *[(int(a), int(b)) for a, b in (line.split() for line in self.parse())]
+        )
+
+        return sum([abs(a - b) for a, b in zip(sorted(left), sorted(right))])
 
     def part2(self):
-        for line in self.parse():
-            pass
+        left, right = zip(
+            *[(int(a), int(b)) for a, b in (line.split() for line in self.parse())]
+        )
+        return sum(i * right.count(i) for i in left)
 
 
 if __name__ == "__main__":
