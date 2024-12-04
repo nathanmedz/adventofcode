@@ -1,4 +1,7 @@
 import argparse
+from operator import mul
+from functools import reduce
+import re
 
 
 class Solver:
@@ -12,12 +15,25 @@ class Solver:
                 yield line
 
     def part1(self):
+        total = 0
         for line in self.parse():
-            pass
+            for match in re.finditer(r"mul\((\d{1,3})\,(\d{1,3})\)", line):
+                total += reduce(mul, [int(i) for i in match.groups()])
+        return total
 
     def part2(self):
+        total = 0
         for line in self.parse():
-            pass
+            line = "".join(
+                [
+                    segment[segment.find("do()") :]
+                    for segment in ("do()" + line).split("don't()")
+                ]
+            )
+            for match in re.finditer(r"mul\((\d{1,3})\,(\d{1,3})\)", line):
+                groups = [int(i) for i in match.groups()]
+                total += reduce(mul, groups)
+        return total
 
 
 if __name__ == "__main__":
