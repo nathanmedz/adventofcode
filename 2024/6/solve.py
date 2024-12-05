@@ -23,7 +23,7 @@ class Solver:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--part", type=int, default=1)
-    parser.add_argument("--test", type=bool, default=False)
+    parser.add_argument("--test", action="store_true")
     args = parser.parse_args()
     solver = Solver(args.test)
     if args.part == 2:
