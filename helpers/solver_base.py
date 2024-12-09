@@ -20,3 +20,8 @@ class SolverBase:
         with open(file, "r") as f:
             for line in f.read().strip().split("\n"):
                 yield line
+
+    def parse_as_line(self):
+        file = "test.txt" if self.test else "input.txt"
+        with open(file, "r") as f:
+            return f.read().strip().split("\n")[0]
