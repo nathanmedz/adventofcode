@@ -1,4 +1,5 @@
 import argparse
+
 from adventofcode.helpers.solver_base import SolverBase
 
 
@@ -19,10 +20,20 @@ def create_map(data):
 def count_total(out):
     total = 0
     for i, j in enumerate(out):
-        if j[0] == ".":
-            return total
-        total += i * int(j[0])
+        int_j = int(j[0] if j[0] != "." else 0)
+        total += i * int_j
     return total
+
+
+def get_block(line, start, char, direction):
+    end = start
+    while end >= 1 and line[end + 1 * direction][0] == char:
+        end += 1 * direction
+    if direction == -1:
+        start += 1
+    else:
+        end += 1
+    return start, end
 
 
 class Solver(SolverBase):
@@ -44,7 +55,42 @@ class Solver(SolverBase):
         return count_total(out)
 
     def part2(self):
-        pass
+        data = self.parse_as_line()
+        out = create_map(data)
+        right = len(out) - 1
+        while right > 0:
+            block = out[right][0]
+            if block != ".":
+                right_start, right = get_block(out, right, block, -1)
+            else:
+                right -= 1
+                continue
+
+            block_length = right_start - right
+            left_start = None
+
+            for left in range(0, right):
+                left_char = out[left][0]
+                if left_char == ".":
+                    left_start, left = get_block(out, left, left_char, 1)
+                else:
+                    continue
+
+                left_block_length = left - left_start
+                if left_block_length >= block_length:
+                    (
+                        out[left_start : left_start + block_length],
+                        out[right:right_start],
+                    ) = (
+                        out[right:right_start],
+                        out[left_start : left_start + block_length],
+                    )
+
+                    break
+
+            right -= 1
+
+        return count_total(out)
 
 
 if __name__ == "__main__":
