@@ -1,38 +1,37 @@
 import argparse
+import functools
 from adventofcode.helpers.solver_base import SolverBase
 
 
+@functools.cache
 def transform(rock):
     if rock == 0:
-        return [1]
+        return (1,)
     elif len(str(rock)) % 2 == 0:
         str_rock = str(rock)
-        return [
+        return (
             int(str_rock[: len(str_rock) // 2]),
             int(str_rock[len(str_rock) // 2 :]),
-        ]
+        )
     else:
-        return [rock * 2024]
+        return (rock * 2024,)
 
 
-def step(rocks):
-    stepped = []
-    for rock in rocks:
-        stepped.extend(transform(rock))
-
-    return stepped
+@functools.cache
+def step(rocks, curr, max_iter):
+    if curr == max_iter:
+        return len(rocks)
+    return sum([step(transform(rock), curr + 1, max_iter) for rock in rocks])
 
 
 class Solver(SolverBase):
     def part1(self):
-        rocks = [int(i) for i in self.parse_as_line().split()]
-        for _ in range(25):
-            rocks = step(rocks)
-        return len(rocks)
+        rocks = (int(i) for i in self.parse_as_line().split())
+        return step(rocks, 0, 25)
 
     def part2(self):
-        for line in self.parse_as_lines():
-            pass
+        rocks = (int(i) for i in self.parse_as_line().split())
+        return step(rocks, 0, 75)
 
 
 if __name__ == "__main__":
