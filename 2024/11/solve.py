@@ -1,6 +1,6 @@
 import argparse
 import functools
-from adventofcode.helpers.solver_base import SolverBase
+from helpers.solver_base import SolverBase
 
 
 @functools.cache

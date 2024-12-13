@@ -1,5 +1,5 @@
 import argparse
-from adventofcode.helpers.solver_base import SolverBase
+from helpers.solver_base import SolverBase
 from sympy.core.numbers import Integer
 from sympy import Eq, symbols
 from sympy.solvers import solve

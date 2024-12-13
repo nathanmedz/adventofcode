@@ -1,6 +1,6 @@
 import argparse
 from collections import defaultdict
-from adventofcode.helpers.solver_base import SolverBase
+from helpers.solver_base import SolverBase
 
 
 class Solver(SolverBase):
