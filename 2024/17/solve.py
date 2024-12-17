@@ -26,8 +26,6 @@ def solve(a, b, c, program):
             ops[5] = ops[5] ^ ops[6]
         elif inst == 5:
             out.append(combo_op % 8)
-            # if program[: len(out)] != out:
-            #     return []
         elif inst == 6:
             ops[5] = int(ops[4] / 2**combo_op)
         elif inst == 7:
