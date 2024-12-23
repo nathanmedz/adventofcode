@@ -1,3 +1,6 @@
+import argparse
+
+
 def input_as_dict(lines):
     out = {}
     for y, line in enumerate(lines):
@@ -25,3 +28,10 @@ class SolverBase:
         file = "test.txt" if self.test else "input.txt"
         with open(file, "r") as f:
             return f.read().strip().split("\n")[0]
+
+
+def _get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--part", type=int, default=1)
+    parser.add_argument("--test", action="store_true")
+    return parser.parse_args()
